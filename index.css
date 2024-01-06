@@ -1,0 +1,30 @@
+
+#portpass {
+	display: grid;
+	grid-template-columns: 100px 1fr;
+	gap: 0.4rem;
+}
+#wsport {width : 100px;}
+#wspass {max-width: 400px;}
+.status-disconnect {color: red; --text: "disconnect"}
+.status-connecting {color: red; --text: "connecting…"}
+.status-connected {color:#2cf719; --text: "connected";}
+[class^=status-]::after{content: var(--text);}
+
+.jsgrid-cell {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.grid {
+	display: grid;
+	grid-template-columns: 300px 1fr;
+}
+#setlists {
+	height: 350px;
+}
+#itemList {
+	height: 350px;
+}
+#songs {
+	height: 350px;
+}

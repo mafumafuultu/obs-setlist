@@ -1,0 +1,19 @@
+{
+  "name": "obs-setlist",
+  "version": "0.1.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "db": "surreal start --auth -u root -p root --bind 127.0.0.1:8000 file:test.db",
+    "debugdb": "surreal start --log trace --auth -u root -p root --bind 127.0.0.1:8000 file:test.db"
+  },
+  "keywords": [],
+  "author": "mafumafuultu",
+  "license": "MIT",
+  "dependencies": {
+    "mime-types": "^2.1.35",
+    "socket.io": "^4.7.3",
+    "surrealdb.node": "^0.3.0"
+  }
+}

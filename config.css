@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&display=swap');
+
+:root {
+	--web-font-deltagothicone: 'Dela Gothic One', sans-serif;
+	--web-font-dotgothic: 'DotGothic16', cursive;
+	--web-font-hachimarupop: 'Hachi Maru Pop', cursive;
+
+	--font-all: var(--web-font-hachimarupop);
+	--color-all: white;
+	--shadow-color: black;
+
+	--text-outline: 2px 2px 2px var(--shadow-color, black), -2px -2px 2px var(--shadow-color, black), 2px -2px 2px var(--shadow-color, black), -2px 2px 2px var(--shadow-color, black);
+	text-shadow: var(--text-outline);
+}
+
+body {
+	font-size: 16px;
+}
+
+#setlist_name {
+	color: var(--color-setlist, var(--color-all));
+	font-family: var(--font-setlist, var(--font-all));
+	font-size: 2rem;	
+}
+
+#currentsong {
+	color: var(--color-currentsong, var(--color-all));
+	font-family: var(--font-currentsong, var(--font-all));
+	font-size: 3rem;
+	font-weight: bold;
+}
+
+#list_finished {
+	color: var(--color-setlist, var(--color-all));
+	font-family: var(--font-setlist, var(--font-all));
+	padding-left: 2rem;
+	font-size: 1.5rem;
+}
