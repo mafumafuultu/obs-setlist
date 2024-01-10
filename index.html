@@ -4,28 +4,55 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Set list changer</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fairy.css@1.0.1/fairy.min.css">
 	<link rel="stylesheet" href="index.css">
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://unpkg.com/cheetah-grid@1.13"></script>
+	<script src="./base.js"></script>
 	<script src="./index.js"></script>
 </head>
-<body>
-	<h1>obs-setlist setlist changer</h1>
+<body class="oslight">
+	<div class="h3">obs-setlist setlist changer</div>
 	<!-- <span class="status-disconnect">●</span><br>
 	<span class="status-connecting">●</span><br>
 	<span class="status-connected">●</span> -->
 
 	<div class="grid">
 		<div class="container">
-			<h2>Setlist</h2>
+			<span class="f4">Setlist</span>
+			<button type="button" class="btn m-left" id="showNewSetlist">Add</button>
 			<div id="setlists"></div>
 		</div>
 		<div class="container">
-			<h2>Items</h2>
+			<span class="f4" id="currentsetlist"></span><span class="filterText"><input type="search" class="i-text" name="" id="itemsearch" placeholder="Filter keyword"></span><button type="button" class="btn m-left" id="updateItems">Update</button><button type="button" class="btn m-left" id="toFinish">check to finish</button>
 			<div id="itemList"></div>
 		</div>
 	</div>
-	<h2>Music info</h2>
-	<div id="songs"></div>
+	<div class="container">
+		<span class="f4">Music info</span><span class="filterText"><input type="search" class="i-text" name="" id="songsearch" placeholder="Filter keyword"></span><button type="button" class="btn m-left" id="showNewSongs">Add</button><button type="button" class="btn m-left" id="addItems">Add Setlist</button>
+		<div id="songs"></div>
+	</div>
+
+	<dialog id="newSetlist">
+		<div class="h3 t-center">Add Setlist</div>
+		<label for="setlistTitle">Title</label><input type="text" class="i-text" name="" id="setlistTitle" placeholder="Title" required>
+		<div class="dialogbtns">
+			<button type="button" class="btn btn-cancel" id="cancelSetlist" value="_cancel">Cancel</button>
+			<button type="button" class="btn btn-ok" id="addSetlist">Add</button>
+		</div>
+	</dialog>
+	<dialog id="newSong">
+		<div class="h3 t-center">Add Music info</div>
+		<div class="labelinput">
+			<label for="songtitle">Title</label><input type="text" class="i-text" name="" id="songtitle" placeholder="Title" required>
+			<label for="songArtist">Artist</label><input type="text" class="i-text" name="" id="songArtist" placeholder="Artist">
+			<label for="songURL">URL</label><input type="text" class="i-text" name="" id="songURL" placeholder="URL">
+			<label for="songTags">Tags</label><input type="text" class="i-text" name="" id="songTags" placeholder="Tags">
+		</div>
+		<div class="dialogbtns">
+			<button type="button" class="btn btn-cancel" id="cancelSong" value="_cancel">Cancel</button>
+			<button type="button" class="btn btn-ok" id="addSong">Add</button>
+		</div>
+	</dialog>
 </body>
 </html>

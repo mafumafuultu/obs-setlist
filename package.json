@@ -1,12 +1,12 @@
 {
   "name": "obs-setlist",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "db": "surreal start --auth -u root -p root --bind 127.0.0.1:8000 file:test.db",
-    "debugdb": "surreal start --log trace --auth -u root -p root --bind 127.0.0.1:8000 file:test.db"
+    "db": "surreal start --auth -u obs-setlist -p obs-setlist --bind 127.0.0.1:8000 file:setlist.db",
+    "debugdb": "surreal start --log trace --auth -u obs-setlist -p obs-setlist --bind 127.0.0.1:8000 file:setlist.db"
   },
   "keywords": [],
   "author": "mafumafuultu",

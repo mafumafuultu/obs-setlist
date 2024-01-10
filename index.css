@@ -1,3 +1,11 @@
+:root {
+	--btn-color-all: var(--text-color);
+	--btn-bgcolor-all: var(--background-color);
+}
+
+h1,h2,h3,h4,h5,h6 {
+	margin:0;
+}
 
 #portpass {
 	display: grid;
@@ -6,6 +14,7 @@
 }
 #wsport {width : 100px;}
 #wspass {max-width: 400px;}
+
 .status-disconnect {color: red; --text: "disconnect"}
 .status-connecting {color: red; --text: "connecting…"}
 .status-connected {color:#2cf719; --text: "connected";}
@@ -15,16 +24,93 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
 .grid {
-	display: grid;
 	grid-template-columns: 300px 1fr;
 }
-#setlists {
+
+#setlists, #itemList, #songs {
 	height: 350px;
 }
-#itemList {
-	height: 350px;
+
+.t-center { text-align: center; }
+
+.i-text {
+	border: none;
+	border-bottom: solid 2px var(--text-color);
+	outline: none;
+	background: transparent;
+	font-size: 1rem;
 }
-#songs {
-	height: 350px;
+.i-text::placeholder {font-size: 1rem;}
+.i-text:invalid {
+	color: #ff3b3b;
+	border-bottom: solid 2px #ff3b3b;
 }
+.i-text:invalid::placeholder { color: #ff3b3b; }
+
+.m-left,
+#itemsearch, #songsearch {
+	margin-left: 0.5rem;
+}
+
+#itemsearch:focus,
+#songsearch:focus {
+	border: none;
+	border-bottom: solid 2px blue;
+}
+
+.btn-cancel { --btn-color: red; }
+.btn-ok { --btn-color: blue; }
+.btn {
+	font-size: 14px;
+	color: var(--btn-color, var(--btn-color-all));
+	background: transparent;
+	border: solid 2px var(--btn-color, var(--btn-color-all));;
+	border-radius: 4px;
+	transition: color, background;
+	transition-delay: 100ms;
+	transition-duration: 200ms;
+	min-width: 6rem;
+}
+.btn:hover {
+	color : var(--btn-bgcolor, var(--btn-bgcolor-all));
+	background: var(--btn-color, var(--btn-color-all));
+}
+.dialogbtns {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	margin-top: 4px;
+	gap: 4px;
+}
+dialog {
+	color: var(--text-color);
+	background: var(--background-color);
+	border: solid 1px var(--text-color);
+}
+.labelinput {
+	display: grid;
+	grid-template-columns: min-content 1fr;
+	gap: 0.2rem;
+}
+.labelinput label {
+	text-wrap: nowrap;
+	text-align: right;
+	padding-right: 0.5rem;
+}
+
+.filterText {position: relative}
+.filterText:hover::before {
+	position: absolute;
+	top: -2rem;
+	left: 1rem;
+	z-index: 100;
+	background: #ccc;
+	padding: 4px;
+	font-size: 14px;
+	border: solid #666 1px;
+	border-radius: 4px;
+	white-space: pre;
+	content: "Partial match search, comma implies AND search";
+}
+button:disabled {opacity: 0.5;}
