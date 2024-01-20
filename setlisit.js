@@ -9,6 +9,26 @@ const onload = () => document.readyState !== 'complete'
 	}))
 	: Promise.resolve();
 
+const ani = {
+	wait: 'leSnake',
+	in: 'leFadeInRight',
+	out: 'leFadeOutLeft',
+};
+
+const setNextCurrent = (e, title) => {
+	e.classList.add('hide');
+	e.classList.remove(ani.in);
+	e.classList.remove(ani.out);
+	e.innerHTML = '';
+	e.textContent = title;
+	setAnimateSequence(e);
+};
+const showListItem = li => {
+	setAnimateSequence(li);
+	li.classList.add(ani.in);
+	li.classList.remove('hide');
+};
+
 onload().then(_ => {
 	init();
 });
@@ -17,6 +37,7 @@ function init() {
 	g.io = io();
 	g.io.on(`connect`, console.log);
 	g.io.emit(`connect_${page}`, 'connect');
+
 	g.io.on('setNext', setNext);
 	g.io.on('setTitle', setTitle);
 	g.io.on('openCurrent', openCurrent);
@@ -24,13 +45,6 @@ function init() {
 	window.onbeforeunload = function() {
 	}
 }
-
-const ani = {
-	wait: 'leSnake',
-	in: 'leFadeInRight',
-	out: 'leFadeOutLeft',
-};
-
 
 function toFinish(items) {
 	console.log(items);
@@ -41,11 +55,7 @@ function toFinish(items) {
 	setTimeout(() => {
 		finish.innerHTML = '';
 		finish.append(...el);
-		el.forEach(li => {
-			setAnimateSequence(li)
-			li.classList.add(ani.in);
-			li.classList.remove('hide');
-		});
+		el.forEach(showListItem);
 		setTimeout(() => {
 			el.forEach(li => {
 				li.textContent = li.textContent;
@@ -54,8 +64,12 @@ function toFinish(items) {
 	}, 2500);
 }
 
-function setTitle(setlistTitle) {
-	ID('setlist_name').textContent = setlistTitle;
+
+
+function setTitle(msg) {
+	let title = ID('setlist_name');
+	title.textContent = msg.title;
+	title.dataset.id = msg.id;
 }
 
 function setNext(nextTitle) {
@@ -65,34 +79,18 @@ function setNext(nextTitle) {
 	current.classList.remove(ani.wait);
 	if (txt === '') {
 		setTimeout(() => {
-			current.classList.add('hide');
-			current.classList.remove(ani.in);
-			current.classList.remove(ani.out);
-			current.innerHTML = '';
-			current.textContent = nextTitle;
-
-			setAnimateSequence(current);
+			setNextCurrent(current, nextTitle);
 		}, 2500);
 	} else {
 		let li = createtag('li', {cls: 'cssanimation sequence hide', txt});
 		ID('list_finished').append(li);
 
 		setTimeout(function() {
-			setAnimateSequence(li);
-			li.classList.add(ani.in);
-			li.classList.remove('hide');
-
-			current.classList.add('hide');
-			current.classList.remove(ani.in);
-			current.classList.remove(ani.out);
-			current.innerHTML = '';
-
+			showListItem(li);
+			setNextCurrent(current, nextTitle);
 			setTimeout(function() {
 				li.innerHTML = li.textContent;
 			}, 2500);
-
-			current.textContent = nextTitle;
-			setAnimateSequence(current);
 		}, 2500);
 	}
 }

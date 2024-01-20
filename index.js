@@ -6,15 +6,9 @@ const g = {
 	},
 	Status: {
 		_setlist : {},
-		setRecord(rec) {
-			this._setlist = rec;
-		},
-		getTitle() {
-			return this._setlist.title;
-		},
-		getID() {
-			return this._setlist.id;
-		}
+		setRecord(rec) { this._setlist = rec; },
+		getTitle() { return this._setlist.title; },
+		getID() { return this._setlist.id; }
 	}
 };
 const page = 'change';
@@ -65,6 +59,19 @@ const openSetList = new cheetahGrid.columns.action.ButtonAction({
 		g.io.emit('getSetlistItem', JSON.stringify(rec));
 	},
 });
+const delSetlist = new cheetahGrid.columns.action.ButtonAction({
+	action(rec) {
+		// ID('')
+		openYn({
+			title: 'Delete?',
+			message: `${rec.title}`,
+			callback() {
+				g.io.emit('del_setlist', JSON.stringify(rec))
+			}
+		});
+	}
+});
+
 const splArr = v => v?.split(',').map(e => e.trim()).filter(e => e != null && e !== '');
 const colSearch = value => {
 	const flVal = splArr(value);
@@ -109,6 +116,7 @@ function init_events() {
 	g.io.emit('getAllsetlist', '');
 	setlistDialogEvents();
 	songDialogevents();
+	ynDialogevents();
 }
 
 function setlistDialogEvents() {
@@ -179,17 +187,48 @@ function songDialogevents() {
 	});
 }
 
+function ynDialogevents() {
+	const dialog = ID('yn'),
+		cancel = ID('yn_cancel'),
+		ok = ID('yn_ok');
+	cancel.addEventListener('click', e => {
+		e.preventDefault();
+		dialog.close('_cancel');
+	});
+}
+
+function openYn(o = {}) {
+	const dialog = ID('yn'),
+		title = ID('yn_title'),
+		message = ID('yn_message'),
+		ok = ID('yn_ok');
+	let opt = Object.assign({
+		title: 'Confirm',
+		message: '',
+		ok: () => {return 'ok';},
+		callback: () => {
+
+		}
+	}, o);
+	title.textContent = opt.title;
+	message.textContent = opt.message;
+	ok.addEventListener('click', () => {
+		dialog.close(opt.ok());
+	}, {once: true});
+	dialog.addEventListener('close', () => {
+		if (dialog.returnValue !== '_cancel') opt.callback();
+	}, {once: true});
+	dialog.showModal();
+}
+
 const DBFN = {
 	updateSetlist(record) { g.source.setlist = record; UP_DATASOURCE.setlist(); },
 	updateItems(record) { g.source.itemlist = record; UP_DATASOURCE.items(); },
 	updateSongs(record) { g.source.songs = record; UP_DATASOURCE.songs(); },
 
 	addSetlist(json) {io.emit('addSetlist', json)},
-	addItems(json) {
-
-	},
+	addItems(json) {},
 	addSong(json) {},
-
 
 	getSetlistItem(title) {
 		g.io.emit('getSetlistItem', title);
@@ -200,27 +239,15 @@ const UP_DATASOURCE = {
 	_toDataSource(data, length) {
 		const getData = index => data[index] || (data[index] = {});
 		let source = new cheetahGrid.data.CachedDataSource({
-			get(index) {
-				return getData(index);
-			},
+			get(index) { return getData(index); },
 			length
 		});
 		return new cheetahGrid.data.FilterDataSource( source );
 	},
-	setlist() {
-		let length = g.source.setlist.length;
-		g.setlist.dataSource = this._toDataSource(g.source.setlist, length);
-	},
-	items() {
-		let length = g.source.itemlist.length;
-		g.itemlist.dataSource = this._toDataSource(g.source.itemlist, length);
-	},
-	songs() {
-		let length = g.source.songs.length;
-		g.songlist.dataSource = this._toDataSource(g.source.songs, length);
-	},
+	setlist() { g.setlist.dataSource = this._toDataSource(g.source.setlist, g.source.setlist.length); },
+	items() { g.itemlist.dataSource = this._toDataSource(g.source.itemlist, g.source.itemlist.length); },
+	songs() { g.songlist.dataSource = this._toDataSource(g.source.songs, g.source.songs.length); },
 };
-
 
 function createSetList() {
 	let {style, headerStyle} = gridTheme;
@@ -228,7 +255,8 @@ function createSetList() {
 		parentElement: document.querySelector('#setlists'),
 		header : [
 			{field: 'title', caption: 'Title', action: 'input', width: 220, style, headerStyle},
-			{width: 70, columnType : new cheetahGrid.columns.type.ButtonColumn({caption: 'load'}), action: openSetList, style, headerStyle},
+			{width: 50, columnType : new cheetahGrid.columns.type.ButtonColumn({caption: 'load'}), action: openSetList, style, headerStyle},
+			{width: 50, columnType : new cheetahGrid.columns.type.ButtonColumn({caption: 'delete'}), action: delSetlist, style, headerStyle},
 		],
 	});
 	UP_DATASOURCE.setlist();
@@ -238,11 +266,9 @@ function createSetList() {
 			g.io.emit('change_setlist', JSON.stringify(v.record));
 		});
 	});
-
 }
 
 function createSetListItem() {
-
 	ID('updateItems').addEventListener('click', () => {
 		let id = g.Status.getID();
 		if (id?.length) {
@@ -261,7 +287,21 @@ function createSetListItem() {
 			let arr = g.source.itemlist.filter(v => v.check === true).map(v => v.title);
 			g.io.emit('send_toFinish', arr);
 		}
-	})
+	});
+	ID('delete').addEventListener('click', () => {
+		let id = g.Status.getID();
+		if (id?.length) {
+			openYn({
+				title: 'Delete?',
+				message: 'Checked items delete from this setlist',
+				callback() {
+					let arr = g.source.itemlist.filter(v => v.check === true).map(v => v.id);
+					g.io.emit('del_fromsetlist', JSON.stringify({id, items: arr}));
+				}
+			});
+		}
+	});
+
 	let {style, headerStyle} = gridTheme;
 
 	g.itemlist = new cheetahGrid.ListGrid({
@@ -307,6 +347,20 @@ function createSongTable() {
 		}
 	});
 
+	ID('deleteSong').addEventListener('click', () => {
+		let id = g.Status.getID();
+		if (id?.length) {
+			openYn({
+				title: 'Delete?',
+				message: 'Checked items delete from this setlist',
+				callback() {
+					let arr = g.source.songs.filter(v => v.check === true).map(v => v.id);
+					g.io.emit('del_song', JSON.stringify({items: arr}));
+				}
+			});
+		}
+	});
+
 	let {style, headerStyle} = gridTheme;
 
 	g.songlist = new cheetahGrid.ListGrid({
@@ -323,6 +377,7 @@ function createSongTable() {
 		],
 		frozenColCount: 2,
 	});
+
 	UP_DATASOURCE.songs();
 	g.songlist.listen('changed_value', (...args) => {
 		args.forEach(v => {
@@ -336,9 +391,6 @@ function createSongTable() {
 	});
 
 	const search = document.querySelector('#songsearch');
-	var xx = 'aa'
-
-
 	search.addEventListener('input', () => {
 		g.songlist.dataSource.filter = colSearch(search.value);
 		g.songlist.invalidate();

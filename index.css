@@ -26,7 +26,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .grid {
-	grid-template-columns: 300px 1fr;
+	grid-template-columns: 330px 1fr;
 }
 
 #setlists, #itemList, #songs {
@@ -72,6 +72,7 @@ h1,h2,h3,h4,h5,h6 {
 	transition-delay: 100ms;
 	transition-duration: 200ms;
 	min-width: 6rem;
+	height: fit-content;
 }
 .btn:hover {
 	color : var(--btn-bgcolor, var(--btn-bgcolor-all));

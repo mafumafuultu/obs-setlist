@@ -1,6 +1,6 @@
 # OBS setlist
-![](https://img.shields.io/static/v1?label=status&message=wip&color=red)
-![](https://img.shields.io/static/v1?label=version&message=0.2.0&color=blue)
+![](https://img.shields.io/static/v1?label=status&message=beta&color=red)
+![](https://img.shields.io/static/v1?label=version&message=0.5.0&color=blue)
 
 ### require
 * NodeJS

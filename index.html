@@ -24,12 +24,25 @@
 			<div id="setlists"></div>
 		</div>
 		<div class="container">
-			<span class="f4" id="currentsetlist"></span><span class="filterText"><input type="search" class="i-text" name="" id="itemsearch" placeholder="Filter keyword"></span><button type="button" class="btn m-left" id="updateItems">Update</button><button type="button" class="btn m-left" id="toFinish">check to finish</button>
+			<div class="flex">
+				<span class="f4" id="currentsetlist"></span>
+				<span class="filterText"><input type="search" class="i-text" name="" id="itemsearch" placeholder="Filter keyword"></span>
+				<button type="button" class="btn m-left" id="updateItems">Update</button>
+				<button type="button" class="btn m-left" id="toFinish">check to finish</button>
+				<button type="button" class="btn m-left" id="delete">delete</button>
+			</div>
+			
 			<div id="itemList"></div>
 		</div>
 	</div>
 	<div class="container">
-		<span class="f4">Music info</span><span class="filterText"><input type="search" class="i-text" name="" id="songsearch" placeholder="Filter keyword"></span><button type="button" class="btn m-left" id="showNewSongs">Add</button><button type="button" class="btn m-left" id="addItems">Add Setlist</button>
+		<div class="flex">
+			<span class="f4">Music info</span>
+			<span class="filterText"><input type="search" class="i-text" name="" id="songsearch" placeholder="Filter keyword"></span>
+			<button type="button" class="btn m-left" id="showNewSongs">Add</button>
+			<button type="button" class="btn m-left" id="addItems">Add Setlist</button>
+			<button type="button" class="btn m-left" id="deleteSong">delete</button>
+		</div>
 		<div id="songs"></div>
 	</div>
 
@@ -52,6 +65,14 @@
 		<div class="dialogbtns">
 			<button type="button" class="btn btn-cancel" id="cancelSong" value="_cancel">Cancel</button>
 			<button type="button" class="btn btn-ok" id="addSong">Add</button>
+		</div>
+	</dialog>
+	<dialog id="yn">
+		<div class="h3 t-center" id="yn_title"></div>
+		<div id="yn_message"></div>
+		<div class="dialogbtns">
+			<button type="button" class="btn btn-cancel" id="yn_cancel" value="_cancel">Cancel</button>
+			<button type="button" class="btn btn-ok" id="yn_ok">OK</button>
 		</div>
 	</dialog>
 </body>

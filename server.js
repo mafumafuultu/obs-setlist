@@ -13,6 +13,14 @@ const CONFIG = {
 	"dbport" : 8000
 };
 
+const ARG = process.argv.reduce((o, v) => {
+	switch(v) {
+		case '-log': o.log = true; break;
+		default: 
+	}
+	return o;
+}, {});
+
 try {
 	let data = fs.readFileSync('./config.json', 'utf-8');
 	let {host, port, username, password, dbport} = JSON.parse(data);
@@ -132,14 +140,14 @@ io.on('connection', socket => {
 	socket.on('change_items', DBFN.changeItems);
 	socket.on('change_songs', DBFN.changeSong);
 
-	socket.on('send_setTitle', msg => {
-		const {title} = JSON.parse(msg);
-		STATUS.updateSetlist(title);
-		io.emit('setTitle', title);
-	});
 	socket.on('send_setNext', msg => io.emit('setNext', msg));
 	socket.on('send_openCurrent', () => io.emit('openCurrent', ''));
 	socket.on('send_toFinish', msg => io.emit('checkToFinish', msg));
+	socket.on('send_clear', () => io.emit(''))
+
+	socket.on('del_setlist', DBFN.removeSetList);
+	socket.on('del_fromsetlist', DBFN.removeItem);
+	socket.on('del_song', DBFN.removeSong);
 });
 
 async function _getSetList(id) {
@@ -155,8 +163,9 @@ const DBFN = {
 	async getSetlist(msg) {
 		if (msg?.length === 0) return ;
 		let record = JSON.parse(msg);
+		console.log(record);
 		STATUS.updateSetlist(record);
-		io.emit('setTitle', record.title);
+		io.emit('setTitle', record);
 		let items = await db.query(`select id, no, songid.title as title, songid.artist as artist, songid.url as url, songid.tags ?? [] as tags from items where setlist = ${record.id} ORDER BY no;`);
 		io.emit('updateItems', items);
 	},
@@ -207,7 +216,29 @@ const DBFN = {
 			title, artist, url, tags
 		});
 	},
-	async removeItem(msg) {
+	async removeSetList(msg) {
 		let {id} = JSON.parse(msg);
+		let setlist = id;
+		await db.query(`DELETE items WHERE setlist=$setlist;`, {
+			setlist
+		});
+		await db.query(`delete $setlist;`, {
+			setlist
+		}); 
+	},
+	async removeItem(msg) {
+		let datas = JSON.parse(msg);
+		await db.query(`
+		FOR $target IN $items {
+			DELETE $target;
+		}`, {items: datas.items});
+	},
+	async removeSong(msg) {
+		let datas = JSON.parse(mgs);
+		await db.query(`
+		FOR $target IN $items {
+			DELETE items WHERE songid=$target;
+			DELETE $target;
+		}`, {items: datas.items});
 	}
 }
