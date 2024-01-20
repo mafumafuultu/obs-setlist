@@ -352,7 +352,7 @@ function createSongTable() {
 		if (id?.length) {
 			openYn({
 				title: 'Delete?',
-				message: 'Checked items delete from this setlist',
+				message: 'Checked items delete',
 				callback() {
 					let arr = g.source.songs.filter(v => v.check === true).map(v => v.id);
 					g.io.emit('del_song', JSON.stringify({items: arr}));

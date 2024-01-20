@@ -234,11 +234,11 @@ const DBFN = {
 		}`, {items: datas.items});
 	},
 	async removeSong(msg) {
-		let datas = JSON.parse(mgs);
+		let datas = JSON.parse(msg);
 		await db.query(`
 		FOR $target IN $items {
 			DELETE items WHERE songid=$target;
-			DELETE $target;
+			DELETE songs WHERE id = $target;
 		}`, {items: datas.items});
 	}
 }
