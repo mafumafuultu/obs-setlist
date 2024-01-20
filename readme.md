@@ -3,7 +3,7 @@
 ![](https://img.shields.io/static/v1?label=version&message=0.5.0&color=blue)
 
 ### require
-* NodeJS
+* [NodeJS](https://nodejs.org/en/download/)
 * [SurrealDB](https://docs.surrealdb.com/docs/installation/windows#installing-surrealdb-using-the-install-script)
 
 
