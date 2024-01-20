@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "db": "surreal start --auth -u obs-setlist -p obs-setlist --bind 127.0.0.1:8000 file:setlist.db",
-    "debugdb": "surreal start --log trace --auth -u obs-setlist -p obs-setlist --bind 127.0.0.1:8000 file:setlist.db"
+    "debugdb": "surreal start --log trace --auth -u obs-setlist -p obs-setlist --bind 127.0.0.1:8000 file:setlist.db",
+    "import" : "node importsong.js"
   },
   "keywords": [],
   "author": "mafumafuultu",

@@ -1,0 +1,13 @@
+/*
+sample
+[
+	{
+		"artist": "artist name",
+		"title": "song title",
+		"url": "",
+		"tags": ["#search", "#index", "#tag"]
+	}
+]
+*/
+[
+]

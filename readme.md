@@ -1,6 +1,6 @@
 # OBS setlist
 ![](https://img.shields.io/static/v1?label=status&message=beta&color=red)
-![](https://img.shields.io/static/v1?label=version&message=0.5.0&color=blue)
+![](https://img.shields.io/static/v1?label=version&message=0.8.0&color=blue)
 
 ### require
 * [NodeJS](https://nodejs.org/en/download/)
@@ -51,3 +51,21 @@ URL : `http://localhost:3000/index.html`
 }
 ```
 
+# import songs
+The setlist database will be cleared and the data mentioned in songs.json will be registered.  
+
+Execute command: `npm run import`
+
+## create import data
+`./songs.json`
+
+```json
+[
+	{
+		"artist": "artist name",
+		"title": "song title",
+		"url": "https://example.com",
+		"tags": ["#search", "#index", "#tag"]
+	}
+]
+```
