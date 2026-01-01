@@ -10,30 +10,26 @@ export class Modal {
 
 	render() {
 		this.overlay = document.createElement('div');
-		this.overlay.style = {
-			position : 'fixed',
-			top : '0',
-			left : '0',
-			width : '100vw',
-			height : '100vh',
-			background : 'rgba(0, 0, 0, 0.7)',
-			backdropFilter : 'blur(4px)',
-			display : 'flex',
-			alignItems : 'center',
-			justifyContent : 'center',
-			zIndex : '1000',
-			opacity : '0',
-			transition : 'opacity 0.2s',
-		 };
+		this.overlay.style.position = 'fixed';
+		this.overlay.style.top = '0';
+		this.overlay.style.left = '0';
+		this.overlay.style.width = '100vw';
+		this.overlay.style.height = '100vh';
+		this.overlay.style.background = 'rgba(0, 0, 0, 0.7)';
+		this.overlay.style.backdropFilter = 'blur(4px)';
+		this.overlay.style.display = 'flex';
+		this.overlay.style.alignItems = 'center';
+		this.overlay.style.justifyContent = 'center';
+		this.overlay.style.zIndex = '1000';
+		this.overlay.style.opacity = '0';
+		this.overlay.style.transition = 'opacity 0.2s';
 
 		const panel = document.createElement('div');
 		panel.className = 'glass-panel';
-		panel.style = {
-			width : '400px',
-			padding : '2rem',
-			transform : 'scale(0.95)',
-			transition : 'transform 0.2s'
-		};
+		panel.style.width = '400px';
+		panel.style.padding = '2rem';
+		panel.style.transform = 'scale(0.95)';
+		panel.style.transition = 'transform 0.2s';
 
 		const h2 = document.createElement('h2');
 		h2.textContent = this.title;
@@ -48,18 +44,14 @@ export class Modal {
 		body.style.marginBottom = '2rem';
 
 		const actions = document.createElement('div');
-		actions.style = {
-			display : 'flex',
-			justifyContent : 'flex-end',
-			gap : '1rem'
-		};
+		actions.style.display = 'flex';
+		actions.style.justifyContent = 'flex-end';
+		actions.style.gap = '1rem';
 
 		const cancelBtn = document.createElement('button');
 		cancelBtn.textContent = 'Cancel';
-		cancelBtn.style = {
-			color : 'var(--text-secondary)',
-			padding : '0.5rem 1rem'
-		};
+		cancelBtn.style.color = 'var(--text-secondary)';
+		cancelBtn.style.padding = '0.5rem 1rem';
 		cancelBtn.onclick = () => this.close();
 
 		const confirmBtn = document.createElement('button');
