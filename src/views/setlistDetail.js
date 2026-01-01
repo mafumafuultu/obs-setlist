@@ -54,6 +54,10 @@ export async function renderSetlistDetail(container, setlistId) {
 
 	// --- Layout ---
 	container.innerHTML = '';
+	container.style.display = 'flex';
+	container.style.flexDirection = 'column';
+	container.style.height = '100%';
+	container.style.overflow = 'hidden';
 
 	// Header
 	const header = document.createElement('div');
@@ -217,7 +221,8 @@ export async function renderSetlistDetail(container, setlistId) {
 	splitView.style.display = 'grid';
 	splitView.style.gridTemplateColumns = '1fr 1fr';
 	splitView.style.gap = '1.5rem';
-	splitView.style.height = 'calc(100vh - 180px)';
+	splitView.style.flex = '1';
+	splitView.style.minHeight = '0'; // Important for nested flex scroll
 	container.appendChild(splitView);
 
 	// --- LEFT COLUMN: Library ---
@@ -231,6 +236,7 @@ export async function renderSetlistDetail(container, setlistId) {
 	const leftColHeader = document.createElement('div');
 	leftColHeader.style.padding = '1rem';
 	leftColHeader.style.borderBottom = '1px solid var(--glass-border)';
+	leftColHeader.style.background = 'var(--bg-secondary)';
 	leftColHeader.innerHTML = '<h3 style="margin: 0; font-size: 1.1rem;">Library</h3>';
 
 	// Left Search
@@ -257,6 +263,7 @@ export async function renderSetlistDetail(container, setlistId) {
 	const rightColHeader = document.createElement('div');
 	rightColHeader.style.padding = '1rem';
 	rightColHeader.style.borderBottom = '1px solid var(--glass-border)';
+	rightColHeader.style.background = 'var(--bg-secondary)';
 	rightColHeader.style.display = 'flex';
 	rightColHeader.style.justifyContent = 'space-between';
 	rightColHeader.style.alignItems = 'center';

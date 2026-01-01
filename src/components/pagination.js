@@ -21,7 +21,6 @@ export class Pagination {
 		wrapper.style.display = 'flex';
 		wrapper.style.alignItems = 'center';
 		wrapper.style.gap = '1rem';
-		wrapper.style.marginTop = '1rem';
 		wrapper.style.justifyContent = 'center';
 
 		const prevBtn = document.createElement('button');

@@ -25,6 +25,10 @@ export async function renderSongList(container) {
 
 	// Layout
 	container.innerHTML = '';
+	container.style.display = 'flex';
+	container.style.flexDirection = 'column';
+	container.style.height = '100%';
+	container.style.overflow = 'hidden';
 
 	// 1. Header & Actions
 	const header = document.createElement('div');
@@ -71,10 +75,17 @@ export async function renderSongList(container) {
 	const searchContainer = document.createElement('div');
 	container.appendChild(searchContainer);
 
-	// 3. Table Container
+	// 3. Pagination Container (Moved here)
+	const paginationContainer = document.createElement('div');
+	container.appendChild(paginationContainer);
+
+	// 4. Table Container
 	const tableContainer = document.createElement('div');
 	tableContainer.className = 'glass-panel';
-	tableContainer.style.overflow = 'hidden';
+	tableContainer.style.flex = '1';
+	tableContainer.style.overflowY = 'auto';
+	tableContainer.style.display = 'flex';
+	tableContainer.style.flexDirection = 'column';
 	container.appendChild(tableContainer);
 
 	const tableEl = document.createElement('table');
@@ -83,15 +94,18 @@ export async function renderSongList(container) {
 	tableEl.style.textAlign = 'left';
 
 	const thead = document.createElement('thead');
-	thead.style.background = 'rgba(255,255,255,0.03)';
+	thead.style.background = 'var(--bg-secondary)'; // Solid background for sticky
+	thead.style.position = 'sticky';
+	thead.style.top = '0';
+	thead.style.zIndex = '1';
 	thead.style.borderBottom = '1px solid var(--glass-border)';
 	thead.innerHTML = `
 	<tr>
-	  <th style="padding: 1rem; color: var(--text-secondary);">Title</th>
-	  <th style="padding: 1rem; color: var(--text-secondary);">Artist</th>
-	  <th style="padding: 1rem; color: var(--text-secondary);">Links</th>
-	  <th style="padding: 1rem; color: var(--text-secondary);">Tags</th>
-	  <th style="padding: 1rem; color: var(--text-secondary); text-align: right;">Actions</th>
+	  <th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Title</th>
+	  <th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Artist</th>
+	  <th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Links</th>
+	  <th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Tags</th>
+	  <th style="padding: 1rem; color: var(--text-secondary); text-align: right; background: inherit;">Actions</th>
 	</tr>
   `;
 	tableEl.appendChild(thead);
@@ -100,9 +114,7 @@ export async function renderSongList(container) {
 	tableEl.appendChild(tbody);
 	tableContainer.appendChild(tableEl);
 
-	// 4. Pagination Container
-	const paginationContainer = document.createElement('div');
-	container.appendChild(paginationContainer);
+	tableContainer.appendChild(tableEl);
 
 	// --- Components Logic ---
 

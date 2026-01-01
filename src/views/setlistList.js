@@ -58,17 +58,53 @@ export async function renderSetlistList(container) {
 	ioGroup.append(importBtn, exportBtn);
 	titleGroup.appendChild(ioGroup);
 
+	const liveControl = document.createElement('div');
+	liveControl.style.display = 'flex';
+	liveControl.style.alignItems = 'center';
+	liveControl.style.gap = '0.5rem';
+
+	const clearHistoryBtn = document.createElement('button');
+	clearHistoryBtn.id = 'clear-history-btn';
+	clearHistoryBtn.className = 'btn-primary';
+	clearHistoryBtn.innerHTML = 'Clear History';
+	clearHistoryBtn.style.background = '#3f3f46';
+	clearHistoryBtn.style.color = '#fff';
+	clearHistoryBtn.style.border = '1px solid #52525b';
+	clearHistoryBtn.style.fontSize = '0.8rem';
+	clearHistoryBtn.style.marginLeft = '0.5rem';
+	clearHistoryBtn.style.boxShadow = 'none';
+	clearHistoryBtn.onclick = async () => {
+		if (!confirm('Clear sang songs history?')) return;
+		console.log("Clearing live history...");
+		try {
+			await db.merge('live_session:current', {
+				status: 'waiting',
+				current_song_id: null,
+				history: []
+			});
+			console.log("History cleared");
+		} catch (err) {
+			console.error("Failed to clear history:", err);
+		}
+	};
+
 	const addBtn = document.createElement('button');
 	addBtn.textContent = '+ New Setlist';
 	addBtn.className = 'btn-primary';
 	addBtn.onclick = () => openCreateSetlistModal(() => reload());
 
-	header.append(titleGroup, addBtn);
+	liveControl.append(clearHistoryBtn, addBtn);
+
+	header.append(titleGroup, liveControl);
 	container.appendChild(header);
 
 	// Search
 	const searchContainer = document.createElement('div');
 	container.appendChild(searchContainer);
+
+	// Pagination
+	const paginationContainer = document.createElement('div');
+	container.appendChild(paginationContainer);
 
 	// Grid/List Container
 	const gridContainer = document.createElement('div');
@@ -76,10 +112,6 @@ export async function renderSetlistList(container) {
 	gridContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
 	gridContainer.style.gap = '1.5rem';
 	container.appendChild(gridContainer);
-
-	// Pagination
-	const paginationContainer = document.createElement('div');
-	container.appendChild(paginationContainer);
 
 	// Handlers
 	const renderItems = (page) => {
