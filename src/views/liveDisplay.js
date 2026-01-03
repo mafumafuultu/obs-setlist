@@ -51,9 +51,11 @@ export async function renderLiveDisplay(container) {
 		pointer-events: auto;
 	`;
 
-	const historyList = document.createElement('ol');
+	// Viewport for history scrolling
+	const historyViewport = document.createElement('div');
+	const threshold = config.liveDisplay.maxVisibleHistory || 10;
 	const histPos = pos.history;
-	historyList.style.cssText = `
+	historyViewport.style.cssText = `
 		position: absolute;
 		${histPos.top ? `top: ${histPos.top};` : ''}
 		${histPos.bottom ? `bottom: ${histPos.bottom};` : ''}
@@ -62,16 +64,40 @@ export async function renderLiveDisplay(container) {
 		${histPos.margin ? `margin: ${histPos.margin};` : ''}
 		${histPos.width ? `width: ${histPos.width};` : ''}
 		${histPos.transform ? `transform: ${histPos.transform};` : ''}
-		text-align: ${histPos.textAlign || 'left'};
+		max-height: calc(100vh ${histPos?.top ? `- ${histPos.top}` : ''} ${histPos?.bottom ? `- ${histPos.bottom}` : ''} - 4rem);
+		overflow: hidden;
+		height: calc(${theme?.fontSizes?.historyItem || '1.4rem'} * ${threshold + 1} + (1rem * ${threshold })); /* Fixed height for scrolling */
+	`;
+
+
+	const historyList = document.createElement('ol');
+	historyList.style.cssText = `
+		margin: 0;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		font-size: ${theme?.fontSizes?.historyItem ? theme.fontSizes.historyItem : '1.4rem'};
+		font-size: ${theme?.fontSizes?.historyItem || '1.4rem'};
 		color: ${theme.historyColor};
 		${theme.textShadow ? `text-shadow: ${theme.textShadow};` : ''}
+		text-align: ${histPos.textAlign || 'left'};
+		transition: transform 0.3s ease-out;
 	`;
+	/**
+		${histPos.top ? `top: ${histPos.top};` : ''}
+		${histPos.bottom ? `bottom: ${histPos.bottom};` : ''}
+		${histPos.left ? `left: ${histPos.left};` : ''}
+		${histPos.right ? `right: ${histPos.right};` : ''}
+		${histPos.margin ? `margin: ${histPos.margin};` : ''}
+		${histPos.width ? `width: ${histPos.width};` : ''}
+		${histPos.transform ? `transform: ${histPos.transform};` : ''}
+	 */
+	const styleTag = document.createElement('style');
+	document.head.appendChild(styleTag);
 
-	overlay.append(historyList, nowPlaying);
+	historyViewport.appendChild(historyList);
+	overlay.append(historyViewport, nowPlaying);
 	container.innerHTML = '';
 	container.appendChild(overlay);
 
@@ -93,11 +119,48 @@ export async function renderLiveDisplay(container) {
 			// Handle History
 			historyList.innerHTML = '';
 			if (session.history && Array.isArray(session.history) && session.history.length > 0) {
-				session.history.forEach((item, idx) => {
+				session.history.forEach((item) => {
 					const row = document.createElement('li');
 					row.innerHTML = `${item.title} / ${item.artist}`;
 					historyList.appendChild(row);
 				});
+
+				// Calculate scrolling
+
+				if (threshold < session.history.length) {
+					// Use requestAnimationFrame to ensure rendering before height check
+					requestAnimationFrame(() => {
+						const listHeight = historyList.scrollHeight;
+						const viewHeight = historyViewport.clientHeight;
+						const scrollDist = listHeight - viewHeight;
+
+						if (0 < scrollDist) {
+							const duration = Math.max(15, scrollDist / 20);
+							const animName = `historyScroll-${Math.round(scrollDist)}`;
+
+							styleTag.textContent = `
+								@keyframes ${animName} {
+									0%, 2% { opacity: 0; transform: translateY(0); }
+									10% { opacity: 0.8; transform: translateY(0); }
+									25% { opacity: 0.8; transform: translateY(0); }
+									65% { opacity: 0.8; transform: translateY(-${scrollDist}px); }
+									80% { opacity: 0.8; transform: translateY(-${scrollDist}px); }
+									90% { opacity: 0; transform: translateY(-${scrollDist}px); }
+									92%, 100% { opacity: 0; transform: translateY(0); }
+								}
+							`;
+							historyList.style.animation = `${animName} ${duration}s linear infinite`;
+						} else {
+							historyList.style.animation = 'none';
+							historyList.style.opacity = '1';
+							historyList.style.transform = 'translateY(0)';
+						}
+					});
+				} else {
+					historyList.style.animation = 'none';
+					historyList.style.opacity = '1';
+					historyList.style.transform = 'translateY(0)';
+				}
 			}
 
 			// Handle Now Playing
@@ -110,9 +173,9 @@ export async function renderLiveDisplay(container) {
 					nowPlaying.style.opacity = '1';
 					nowPlaying.style.transform = `translateX(0) ${npPos.transform || ''}`;
 					nowPlaying.innerHTML = `
-						<div style="font-size: ${theme?.fontSizes?.nowPlayingLabel ? theme.fontSizes.nowPlayingLabel : '1.8rem'}; text-transform: uppercase; letter-spacing: 0.1em; color: ${theme.accentColor}; margin-bottom: 0.5rem;">Now Playing</div>
-						<div style="font-size: ${theme?.fontSizes?.nowPlayingTitle ? theme.fontSizes.nowPlayingTitle : '2.8rem'}; font-weight: 700;">${song.title}</div>
-						<div style="font-size: ${theme?.fontSizes?.nowPlayingArtist ? theme.fontSizes.nowPlayingArtist : '2.1rem'}; opacity: 0.8;">${song.artist}</div>
+						<div style="font-size: ${theme?.fontSizes?.nowPlayingLabel || '1.8rem'}; text-transform: uppercase; letter-spacing: 0.1em; color: ${theme.accentColor}; margin-bottom: 0.5rem;">Now Playing</div>
+						<div style="font-size: ${theme?.fontSizes?.nowPlayingTitle || '2.8rem'}; font-weight: 700;">${song.title}</div>
+						<div style="font-size: ${theme?.fontSizes?.nowPlayingArtist || '2.1rem'}; opacity: 0.8;">${song.artist}</div>
 					`;
 				} else {
 					console.warn("Song details not found for ID:", session.current_song_id);

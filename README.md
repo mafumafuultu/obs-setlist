@@ -75,6 +75,7 @@ You chan independently change the visual style and the layout:
 liveDisplay: {
     theme: 'default', // 'Visual style
     positon: 'left_top' // Placement on screen
+    maxVisibleHistory: 10, // Auto scroll starting from this number of items
 }
 ```
 ### Available Presets

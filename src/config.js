@@ -10,6 +10,7 @@ export const config = {
 	liveDisplay: {
 		theme: 'default', // 'default', 'minimal', 'neon'
 		position: 'top_left', // 'top_left', 'top_right', 'bottom_left', 'bottom_right'
+		maxVisibleHistory: 10,  // Auto scroll starting from this number of items
 	},
 	positions: {
 		top_left: {
@@ -47,9 +48,9 @@ export const config = {
 			borderRight: "4px solid #ec4899",
 			fontSizes: {
 				historyItem: "1.4rem",
-				nowPlayingLabel: "1.8rem",
+				nowPlayingLabel: "1.4rem",
 				nowPlayingTitle: "2.8rem",
-				nowPlayingArtist: "2.1rem"
+				nowPlayingArtist: "1.8rem"
 			}
 		},
 		default_left_bottom: {
@@ -61,9 +62,9 @@ export const config = {
 			borderRight: "4px solid #ec4899",
 			fontSizes: {
 				historyItem: "1.4rem",
-				nowPlayingLabel: "1.8rem",
+				nowPlayingLabel: "1.4rem",
 				nowPlayingTitle: "2.8rem",
-				nowPlayingArtist: "2.1rem"
+				nowPlayingArtist: "1.8rem"
 			}
 		},
 		minimal: {
@@ -75,9 +76,9 @@ export const config = {
 			borderRight: "2px solid #ffffff",
 			fontSizes: {
 				historyItem: "1.4rem",
-				nowPlayingLabel: "1.8rem",
+				nowPlayingLabel: "1.4rem",
 				nowPlayingTitle: "2.8rem",
-				nowPlayingArtist: "2.1rem"
+				nowPlayingArtist: "1.8rem"
 			}
 		},
 		neon: {
@@ -90,9 +91,9 @@ export const config = {
 			textShadow: "0 0 10px #00f3ff",
 			fontSizes: {
 				historyItem: "1.4rem",
-				nowPlayingLabel: "1.8rem",
+				nowPlayingLabel: "1.4rem",
 				nowPlayingTitle: "2.8rem",
-				nowPlayingArtist: "2.1rem"
+				nowPlayingArtist: "1.8rem"
 			}
 		},
 		cyberpunk: {
@@ -105,9 +106,9 @@ export const config = {
 			textShadow: "0 0 8px rgba(255,0,255,0.8), 0 0 15px rgba(0,255,255,0.4)",
 			fontSizes: {
 				historyItem: "1.4rem",
-				nowPlayingLabel: "1.8rem",
+				nowPlayingLabel: "1.4rem",
 				nowPlayingTitle: "2.8rem",
-				nowPlayingArtist: "2.1rem"
+				nowPlayingArtist: "1.8rem"
 			}
 		},
 		elegance: {
@@ -120,9 +121,9 @@ export const config = {
 			textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
 			fontSizes: {
 				historyItem: "1.4rem",
-				nowPlayingLabel: "1.8rem",
+				nowPlayingLabel: "1.4rem",
 				nowPlayingTitle: "2.8rem",
-				nowPlayingArtist: "2.1rem"
+				nowPlayingArtist: "1.8rem"
 			}
 		}
 	}

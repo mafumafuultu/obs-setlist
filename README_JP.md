@@ -73,7 +73,8 @@ export const config = {
 ```javascript
 liveDisplay: {
     theme: 'default', // デザイン
-    positon: 'left_top' // 画面上の配置
+    positon: 'left_top', // 画面上の配置
+    maxVisibleHistory: 10, // 自動スクロールを開始する件数
 }
 ```
 ### 利用可能なプリセット
