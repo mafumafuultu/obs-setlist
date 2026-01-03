@@ -1,7 +1,9 @@
 # OBS setlist
 ![](https://img.shields.io/badge/status-release-blue?style=flat)
-![](https://img.shields.io/badge/version-1.0.0-blue?style=flat)
+![](https://img.shields.io/badge/version-1.1.0-blue?style=flat)
 ![](https://img.shields.io/badge/SurralDB-2.4.0-purple?style=flat)
+
+[日本語 README](./README_JP.md)
 
 ## Prerequisites
 - [NodeJS](https://nodejs.org/en/download/)
@@ -62,44 +64,46 @@ export const config = {
 > [!NOTE]
 > If you change the `port` or `pass` here and you use `npm run db` to start SurrealDB, make sure to also update the `db` script in `package.json`.
 
-## Live Overlay Themes
+## Live Overlay Customization
 
-The live overlay (`#live`) appearance can be customized in `src/config.js`.
+The live overlay (`#live`) appearance and layout can be customized in `src/config.js`.
 
-### Switching Themes
-Change the `theme` property in `src/config.js`:
+### Switching Themes and Positions
+You chan independently change the visual style and the layout:
+
 ```javascript
-export const config = {
-    liveDisplay: {
-        theme: 'neon', // 'default', 'minimal', or 'neon'
-    },
-    // ...
-};
-```
-
-### Creating/Customizing Themes
-Each theme in the `themes` object contains the following properties:
-
-- **Style**:
-  - `fontFamily`: The font used for all text.
-  - `accentColor`: Primary color for labels.
-  - `nowPlayingBg`: Background color/transparency for the "Now Playing" box.
-  - `historyColor`: Text color for the history list.
-  - `blur`: Backdrop blur intensity (e.g., `10px`).
-  - `textShadow`: (Optional) Glow effect.
-
-- **Positioning**:
-  Each element (`nowPlaying` and `history`) has its own coordinates:
-  - `top`, `bottom`, `left`, `right`: CSS coordinates (e.g., `"2rem"`).
-  - `textAlign`: `"left"`, `"center"`, or `"right"`.
-
-Example theme structure:
-```javascript
-custom: {
-    fontFamily: "'Inter', sans-serif",
-    accentColor: "#ffffff",
-    // ... other styles
-    nowPlaying: { top: "2rem", left: "2rem", textAlign: "left" },
-    history: { top: "10rem", left: "2rem", textAlign: "left" }
+liveDisplay: {
+    theme: 'default', // 'Visual style
+    positon: 'left_top' // Placement on screen
 }
 ```
+### Available Presets
+
+#### Themes (`theme`)
+- `default`
+- `minimal`
+- `neon`
+- `cyberpunk`
+- `elegance`
+
+#### Positions (`position`)
+- `top_left`
+- `top_center`
+- `top_right`
+- `bottom_left`
+- `bottom_center`
+- `bottom_right`
+
+### Customizing Styles
+The `themes`  object in `config.js` defines visual properties:
+- `fontFamily` : Font stack.
+- `accentColor` : Highlight color.
+- `nowPlayingBg` : Background color/blur.
+- `historyColor` : History text color.
+- `textShadow` : Glow effects.
+
+### Customizing Positions
+The `positions` object defines exact coordinates: 
+- `top`, `bottom`, `left`, `right` : CSS values.
+- `textAlign` : Text alignment inside boxes.
+- `margin`, `width`, `transform` : (Advanced) Used for centering and fine-tuning.

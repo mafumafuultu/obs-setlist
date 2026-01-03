@@ -3,6 +3,7 @@ import { config } from '../config';
 
 export async function renderLiveDisplay(container) {
 	const theme = config.themes[config.liveDisplay.theme] || config.themes.default;
+	const pos = config.positions[config.liveDisplay.position] || config.positions.top_left;
 
 	container.innerHTML = '<div style="color: white; padding: 2rem;">Connecting to live session...</div>';
 
@@ -25,7 +26,7 @@ export async function renderLiveDisplay(container) {
 	`;
 
 	const nowPlaying = document.createElement('div');
-	const npPos = theme.nowPlaying;
+	const npPos = pos.nowPlaying;
 	// Determine entrance animation side
 	const slideDist = npPos.right ? '20px' : '-20px';
 
@@ -35,6 +36,8 @@ export async function renderLiveDisplay(container) {
 		${npPos.bottom ? `bottom: ${npPos.bottom};` : ''}
 		${npPos.left ? `left: ${npPos.left};` : ''}
 		${npPos.right ? `right: ${npPos.right};` : ''}
+		${npPos.margin ? `margin: ${npPos.margin};` : ''}
+		${npPos.width ? `width: ${npPos.width};` : ''}
 		text-align: ${npPos.textAlign || 'left'};
 		padding: 1.5rem;
 		background: ${theme.nowPlayingBg};
@@ -43,19 +46,22 @@ export async function renderLiveDisplay(container) {
 		min-width: 250px;
 		transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 		opacity: 0;
-		transform: translateX(${slideDist});
+		transform: translateX(${slideDist}) ${npPos.transform || ''};
 		${theme.textShadow ? `text-shadow: ${theme.textShadow};` : ''}
 		pointer-events: auto;
 	`;
 
 	const historyList = document.createElement('div');
-	const histPos = theme.history;
+	const histPos = pos.history;
 	historyList.style.cssText = `
 		position: absolute;
 		${histPos.top ? `top: ${histPos.top};` : ''}
 		${histPos.bottom ? `bottom: ${histPos.bottom};` : ''}
 		${histPos.left ? `left: ${histPos.left};` : ''}
 		${histPos.right ? `right: ${histPos.right};` : ''}
+		${histPos.margin ? `margin: ${histPos.margin};` : ''}
+		${histPos.width ? `width: ${histPos.width};` : ''}
+		${histPos.transform ? `transform: ${histPos.transform};` : ''}
 		text-align: ${histPos.textAlign || 'left'};
 		display: flex;
 		flex-direction: column;
@@ -102,7 +108,7 @@ export async function renderLiveDisplay(container) {
 
 				if (song) {
 					nowPlaying.style.opacity = '1';
-					nowPlaying.style.transform = 'translateX(0)';
+					nowPlaying.style.transform = `translateX(0) ${npPos.transform || ''}`;
 					nowPlaying.innerHTML = `
 						<div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: ${theme.accentColor}; margin-bottom: 0.5rem;">Now Playing</div>
 						<div style="font-size: 1.8rem; font-weight: 700;">${song.title}</div>
@@ -114,7 +120,7 @@ export async function renderLiveDisplay(container) {
 			} else {
 				console.log("No song currently singing (status:", session.status, ")");
 				nowPlaying.style.opacity = '0';
-				nowPlaying.style.transform = 'translateX(-20px)';
+				nowPlaying.style.transform = `translateX(${slideDist}) ${npPos.transform || ''}`;
 			}
 		} catch (err) {
 			console.error("Live sync update error:", err);

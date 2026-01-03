@@ -1,7 +1,9 @@
 # OBS setlist
 ![](https://img.shields.io/badge/status-release-blue?style=flat)
-![](https://img.shields.io/badge/version-1.0.0-blue?style=flat)
+![](https://img.shields.io/badge/version-1.1.0-blue?style=flat)
 ![](https://img.shields.io/badge/SurralDB-2.4.0-purple?style=flat)
+
+[English README](./README.md)
 
 ## 前提条件
 - [NodeJS](https://nodejs.org/en/download/)
@@ -61,44 +63,46 @@ export const config = {
 > [!NOTE]
 > ここで `port` や `pass` を変更し、かつ `npm run db` で起動している場合は、`package.json` 内の `db` スクリプトも同様に更新してください。
 
-## ライブオーバーレイのテーマ
+## ライブオーバーレイのカスタマイズ
 
-ライブオーバーレイ（`#live`）の見た目は `src/config.js` でカスタマイズできます。
+ライブオーバーレイ (`#live`) の見た目とレイアウトは `src/config.js` で個別にカスタマイズできます。
 
-### テーマの切り替え
-`src/config.js` の `theme` プロパティを変更します：
+### テーマと配置の切り替え
+ビジュアルスタイル（テーマ）と画面上の配置（ポジション）を独立して変更できます。
+
 ```javascript
-export const config = {
-    liveDisplay: {
-        theme: 'neon', // 'default', 'minimal', または 'neon'
-    },
-    // ...
-};
-```
-
-### テーマの作成・カスタマイズ
-`themes` オブジェクト内の各テーマには以下のプロパティが含まれます：
-
-- **スタイル設定**:
-  - `fontFamily`: 全体のフォント。
-  - `accentColor`: ラベルなどのアクセントカラー。
-  - `nowPlayingBg`: 「NOW PLAYING」ボックスの背景色・透明度。
-  - `historyColor`: 履歴リストのテキスト色。
-  - `blur`: 背景のぼかし強度（例：`10px`）。
-  - `textShadow`: （任意）グロー効果（文字の光）。
-
-- **配置設定**:
-  各要素（`nowPlaying` と `history`）は独立した座標を持ちます：
-  - `top`, `bottom`, `left`, `right`: CSSの座標（例：`"2rem"`）。
-  - `textAlign`: `"left"`, `"center"`, または `"right"`。
-
-テーマ構造の例：
-```javascript
-custom: {
-    fontFamily: "'Inter', sans-serif",
-    accentColor: "#ffffff",
-    // ... その他のスタイル
-    nowPlaying: { top: "2rem", left: "2rem", textAlign: "left" },
-    history: { top: "12rem", left: "2rem", textAlign: "left" }
+liveDisplay: {
+    theme: 'default', // デザイン
+    positon: 'left_top' // 画面上の配置
 }
 ```
+### 利用可能なプリセット
+
+#### テーマ (`theme`)
+- `default`
+- `minimal`
+- `neon`
+- `cyberpunk`
+- `elegance`
+
+#### 配置 (`position`)
+- `top_left`
+- `top_center`
+- `top_right`
+- `bottom_left`
+- `bottom_center`
+- `bottom_right`
+
+### Customizing Styles
+`config.js`の`themes`オブジェクトで視覚的なプロパティを定義します :
+- `fontFamily` : 使用するフォント。
+- `accentColor` : ハイライトカラー。
+- `nowPlayingBg` : 背景色とぼかし。
+- `historyColor` : 履歴のテキスト色。
+- `textShadow` : グロー効果。
+
+### Customizing Positions
+`positions`オブジェクトで詳細な座標を定義します :
+- `top`, `bottom`, `left`, `right` : CSSの座標値。
+- `textAlign` : ボックス内のテキスト揃え。
+- `margin`, `width`, `transform` : (Advanced) 中央寄せや微調整用。
