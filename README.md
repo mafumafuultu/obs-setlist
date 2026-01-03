@@ -1,6 +1,6 @@
 # OBS setlist
 ![](https://img.shields.io/badge/status-release-blue?style=flat)
-![](https://img.shields.io/badge/version-1.1.0-blue?style=flat)
+![](https://img.shields.io/badge/version-1.1.1-blue?style=flat)
 ![](https://img.shields.io/badge/SurralDB-2.4.0-purple?style=flat)
 
 [日本語 README](./README_JP.md)
