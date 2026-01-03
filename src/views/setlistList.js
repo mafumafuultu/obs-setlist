@@ -152,13 +152,13 @@ export async function renderSetlistList(container) {
 			content.onclick = () => renderSetlistDetail(container, setlist.id);
 			content.innerHTML = `
 		<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-		  <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 0;">${setlist.title}</h3>
-		  <span style="font-size: 0.85rem; color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${date}</span>
+			<h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 0;">${setlist.title}</h3>
+			<span style="font-size: 0.85rem; color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${date}</span>
 		</div>
 		<div style="color: var(--text-secondary); font-size: 0.9rem;">
-		  ${songCount} songs
+			${songCount} songs
 		</div>
-	  `;
+		`;
 
 			// Actions Footer
 			const actions = document.createElement('div');
@@ -246,14 +246,14 @@ function createSetlistForm(initialData = {}) {
 	const form = document.createElement('div');
 	form.innerHTML = `
 	<div style="margin-bottom: 1rem;">
-	  <label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem;">Title</label>
-	  <input id="setlist-title" type="text" value="${initialData.title || ''}" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none;">
+		<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem;">Title</label>
+		<input id="setlist-title" type="text" value="${initialData.title || ''}" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none;">
 	</div>
 	<div style="margin-bottom: 1rem;">
-	  <label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem;">Date</label>
-	  <input id="setlist-date" type="date" value="${initialData.event_date ? new Date(initialData.event_date).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10)}" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none;">
+		<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem;">Date</label>
+		<input id="setlist-date" type="date" value="${initialData.event_date ? new Date(initialData.event_date).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10)}" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none;">
 	</div>
-  `;
+	`;
 	return form;
 }
 

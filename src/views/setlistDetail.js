@@ -465,9 +465,9 @@ export async function renderSetlistDetail(container, setlistId) {
 				};
 			}
 
-			el.querySelector('.edit-song-btn').onclick = (e) => {
+			el.querySelector('.edit-song-btn').onclick = async (e) => {
 				e.stopPropagation();
-				openEditSongModal(song, async () => {
+				await openEditSongModal(song, async () => {
 					// Update the local setlist object and re-render
 					// We need to find all instances of this song in the setlist and update them
 					const updatedSongs = await db.select('song');

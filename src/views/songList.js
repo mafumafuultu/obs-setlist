@@ -101,13 +101,13 @@ export async function renderSongList(container) {
 	thead.style.borderBottom = '1px solid var(--glass-border)';
 	thead.innerHTML = `
 	<tr>
-	  <th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Title</th>
-	  <th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Artist</th>
-	  <th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Links</th>
-	  <th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Tags</th>
-	  <th style="padding: 1rem; color: var(--text-secondary); text-align: right; background: inherit;">Actions</th>
+		<th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Title</th>
+		<th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Artist</th>
+		<th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Links</th>
+		<th style="padding: 1rem; color: var(--text-secondary); background: inherit;">Tags</th>
+		<th style="padding: 1rem; color: var(--text-secondary); text-align: right; background: inherit;">Actions</th>
 	</tr>
-  `;
+	`;
 	tableEl.appendChild(thead);
 
 	const tbody = document.createElement('tbody');
@@ -144,10 +144,10 @@ export async function renderSongList(container) {
 		<td style="padding: 1rem; font-size: 1.2rem;">${karaokeLink}${lyricsLink}</td>
 		<td style="padding: 1rem;">${(song.tags || []).map(t => `<span style="background: rgba(129, 140, 248, 0.2); color: #818cf8; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; margin-right: 4px;">${t}</span>`).join('')}</td>
 		<td style="padding: 1rem; text-align: right;">
-		   <button class="edit-btn" style="color: var(--accent-primary); opacity: 0.7; margin-right: 0.5rem;">Edit</button>
-		   <button class="delete-btn" style="color: #ef4444; opacity: 0.7;">Delete</button>
+			<button class="edit-btn" style="color: var(--accent-primary); opacity: 0.7; margin-right: 0.5rem;">Edit</button>
+			<button class="delete-btn" style="color: #ef4444; opacity: 0.7;">Delete</button>
 		</td>
-	  `;
+		`;
 
 			tr.querySelector('.edit-btn').onclick = (e) => {
 				e.stopPropagation();
@@ -195,37 +195,150 @@ export async function renderSongList(container) {
 	}
 }
 
-function createSongForm(initialData = {}) {
+function createSongForm(initialData = {}, artists = [], allTags = []) {
 	const form = document.createElement('div');
+	form.style.position = 'relative'; // for suggest dropdown
+	const artistDatalistId = `artist-suggestions-${Math.random().toString(36).substring(2, 11)}`;
+
 	form.innerHTML = `
 	<div style="margin-bottom: 1rem;">
-	  <label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Title</label>
-	  <input id="song-title" type="text" value="${initialData.title || ''}" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
+		<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Title</label>
+		<input id="song-title" type="text" value="${initialData.title || ''}" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
 	</div>
 	<div style="margin-bottom: 1rem;">
-	  <label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Artist</label>
-	  <input id="song-artist" type="text" value="${initialData.artist || ''}" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
+		<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Artist</label>
+		<input id="song-artist" type="text" list="${artistDatalistId}" value="${initialData.artist || ''}" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
+		<datalist id="${artistDatalistId}">
+			${artists.map(a => `<option value="${a}">`).join('')}
+		</datalist>
 	</div>
 	<div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-	  <div style="flex: 1;">
-		<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Karaoke URL</label>
-		<input id="song-karaoke" type="text" value="${initialData.karaoke_url || ''}" placeholder="https://..." style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
-	  </div>
-	  <div style="flex: 1;">
-		<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Lyrics URL</label>
-		<input id="song-lyrics" type="text" value="${initialData.lyrics_url || ''}" placeholder="https://..." style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
-	  </div>
+		<div style="flex: 1;">
+			<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Karaoke URL</label>
+			<input id="song-karaoke" type="text" value="${initialData.karaoke_url || ''}" placeholder="https://..." style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
+		</div>
+		<div style="flex: 1;">
+			<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Lyrics URL</label>
+			<input id="song-lyrics" type="text" value="${initialData.lyrics_url || ''}" placeholder="https://..." style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
+		</div>
 	</div>
-	<div style="margin-bottom: 1rem;">
-	  <label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Tags</label>
-	  <input id="song-tags" type="text" value="${(initialData.tags || []).join(', ')}" placeholder="anime, rock, chill" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
+	<div style="margin-bottom: 1rem; position: relative;">
+		<label style="display: block; color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">Tags</label>
+		<input id="song-tags" type="text" autocomplete="off" value="${(initialData.tags || []).join(', ')}" placeholder="anime, rock, chill" style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; color: white; outline: none; box-sizing: border-box;">
+		<div id="tag-suggestions" class="glass-panel" style="display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 1000; max-height: 200px; overflow-y: auto; margin-top: 4px; box-shadow+ 0 4px 20px rgba(0,0,0,0.4);"></div>
 	</div>
-  `;
+	`;
+
+	const taginput = form.querySelector('#song-tags');
+	const suggestionsDiv = form.querySelector('#tag-suggestions');
+	let selectedIndex = -1;
+
+	const getActiveTag = () => {
+		const val = taginput.value;
+		const pos = taginput.selectionStart;
+		const parts = val.split(',');
+		let currentOffset = 0;
+		for (let i = 0, l = parts.length; i < l; i++) {
+			const part = parts[i];
+			const start = currentOffset;
+			const end = currentOffset + part.length;
+			if (start <= pos && pos <= end + 1) {
+				return {text: part.trim(), index: i, start: end};
+			}
+			currentOffset = end + 1;
+		}
+		return {text: '', index: 0, start: 0, end: 0};
+	};
+
+	const showSugegstions = (query) => {
+		if (!query) {
+			suggestionsDiv.style.display = 'none';
+			return;
+		}
+		const matches = allTags.filter(t => t.toLowerCase().includes(query.toLowerCase()));
+		if (matches.length === 0) {
+			suggestionsDiv.style.display = 'none';
+			return;
+		}
+
+		suggestionsDiv.innerHTML = matches.map((m, i) => `
+			<div class="suggestion-item" data-value="${m}" style="padding: 0.6rem 1rem; cursor: pointer; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; ${i == selectedIndex ? 'background: var(--accent-primary); color: #000;' : ''}">
+				${m}
+			</div>
+		`).join('');
+		suggestionsDiv.style.display = 'block';
+
+		suggestionsDiv.querySelectorAll('.tag-suggestion-item').forEach((item, i) => {
+			item.onclick = () => selectSuggestion(item.dataset.value);
+			item.onmouseenter = () => {
+				selectedIndex = i;
+				updateSelectionStyles();
+			};
+		});
+	};
+
+	const updateSelectionStyles = () => {
+		suggestionsDiv.querySelectorAll('.suggestion-item').forEach((item, i) => {
+			item.style.background = i === selectedIndex ? 'var(--accent-primary)' : 'transparent';
+			item.style.color = i === selectedIndex ? '#000' : 'white';
+		});
+	};
+
+	const selectSuggestion = (value) => {
+		const active = getActiveTag();
+		const val = taginput.value;
+		const parts = val.split(',');
+		parts[active.index] = active.index === 0 ? value : ' ' + value;
+
+		taginput.value = parts.join(',');
+		suggestionsDiv.style.display = 'none';
+		selectedIndex = -1;
+		taginput.focus();
+
+		const newPos = parts.slice(0, active.index + 1).join(',').length;
+		taginput.setSelectionRange(newPos, newPos);
+	};
+
+	taginput.oninput = () => {
+		const active = getActiveTag();
+		selectedIndex = -1;
+		showSugegstions(active.text);
+	};
+
+	taginput.onkeydown = (e) => {
+		if (suggestionsDiv.style.display === 'block') {
+			const items = suggestionsDiv.querySelectorAll('.suggestion-item');
+			if (e.key === 'ArrowDown') {
+				e.preventDefault();
+				selectedIndex = (selectedIndex + 1) % items.length;
+				updateSelectionStyles();
+			} else if (e.key === 'ArrowUp') {
+				e.preventDefault();
+				selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+				updateSelectionStyles();
+			} else if (e.key === 'Enter' && 0 <= selectedIndex) {
+				e.preventDefault();
+				selectSuggestion(items[selectedIndex].dataset.value);
+			} else if (e.key === 'Escape') {
+				suggestionsDiv.style.display = 'none';
+			}
+		}
+	};
+
+	taginput.onblur = () => {
+		setTimeout(() => {
+			suggestionsDiv.style.display = 'none';
+		}, 200);
+	};
+
 	return form;
 }
 
-export function openAddSongModal(onSuccess) {
-	const form = createSongForm();
+export async function openAddSongModal(onSuccess) {
+	const songs = await db.select('song').catch(() => []);
+	const artists = [...new Set(songs.map(s => s.artist).filter(Boolean))].sort();
+	const tags = [...new Set(songs.flatMap(s => s.tags || []).filter(Boolean))].sort();
+	const form = createSongForm({}, artists, tags);
 	new Modal({
 		title: 'Add New Song',
 		content: form,
@@ -243,7 +356,7 @@ export function openAddSongModal(onSuccess) {
 				return false;
 			}
 
-			const tags = tagsStr ? tagsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+			const tags = tagsStr ? [...new Set(tagsStr.split(',').map(s => s.trim()).filter(Boolean))] : [];
 
 			db.create('song', {
 				title,
@@ -262,8 +375,11 @@ export function openAddSongModal(onSuccess) {
 	});
 }
 
-export function openEditSongModal(song, onSuccess) {
-	const form = createSongForm(song);
+export async function openEditSongModal(song, onSuccess) {
+	const songs = await db.select('song').catch(() => []);
+	const artists = [...new Set(songs.map(s => s.artist).filter(Boolean))].sort();
+	const tags = [...new Set(songs.flatMap(s => s.tags || []).filter(Boolean))].sort();
+	const form = createSongForm(song, artists, tags);
 	new Modal({
 		title: 'Edit Song',
 		content: form,
@@ -280,7 +396,7 @@ export function openEditSongModal(song, onSuccess) {
 				alert("Title and Artist are required");
 				return false;
 			}
-			const tags = tagsStr ? tagsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+			const tags = tagsStr ? [...new Set(tagsStr.split(',').map(s => s.trim()).filter(Boolean))] : [];
 
 			db.merge(song.id, {
 				title,
