@@ -1,9 +1,10 @@
 export class Modal {
-	constructor({ title, content, onConfirm, confirmText = 'Confirm' }) {
+	constructor({ title, content, onConfirm, confirmText = 'Confirm', width = '400px' }) {
 		this.title = title;
 		this.content = content; // HTML string or Element
 		this.onConfirm = onConfirm;
 		this.confirmText = confirmText;
+		this.width = width;
 		this.overlay = null;
 		this.render();
 	}
@@ -26,7 +27,8 @@ export class Modal {
 
 		const panel = document.createElement('div');
 		panel.className = 'glass-panel';
-		panel.style.width = '400px';
+		panel.style.width = this.width;
+		panel.style.maxWidth = '95vw';
 		panel.style.padding = '2rem';
 		panel.style.transform = 'scale(0.95)';
 		panel.style.transition = 'transform 0.2s';

@@ -229,6 +229,7 @@ export function openAddSongModal(onSuccess) {
 	new Modal({
 		title: 'Add New Song',
 		content: form,
+		width: '700px',
 		confirmText: 'Create Song',
 		onConfirm: () => {
 			const title = form.querySelector('#song-title').value;
@@ -266,6 +267,7 @@ export function openEditSongModal(song, onSuccess) {
 	new Modal({
 		title: 'Edit Song',
 		content: form,
+		width: '700px',
 		confirmText: 'Save Changes',
 		onConfirm: () => {
 			const title = form.querySelector('#song-title').value;
