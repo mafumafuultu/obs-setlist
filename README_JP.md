@@ -100,6 +100,11 @@ liveDisplay: {
 - `nowPlayingBg` : 背景色とぼかし。
 - `historyColor` : 履歴のテキスト色。
 - `textShadow` : グロー効果。
+- `fontSizes` : テキストのサイズを設定する
+  - `historyItem` : 履歴
+  - `nowPlayingLabel` : NOW PLAYING
+  - `nowPlayingTitle` : 曲タイトル
+  - `nowPlayingArtist` : アーティスト名
 
 ### Customizing Positions
 `positions`オブジェクトで詳細な座標を定義します :

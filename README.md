@@ -101,6 +101,11 @@ The `themes`  object in `config.js` defines visual properties:
 - `nowPlayingBg` : Background color/blur.
 - `historyColor` : History text color.
 - `textShadow` : Glow effects.
+- `fontSizes` : Font size.
+  - `historyItem` : history list size.
+  - `nowPlayingLabel` : 'NOW PLAYING' size.
+  - `nowPlayingTitle` : Title size.
+  - `nowPlayingArtist` : Artist name size.
 
 ### Customizing Positions
 The `positions` object defines exact coordinates: 

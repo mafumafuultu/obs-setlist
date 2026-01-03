@@ -51,7 +51,7 @@ export async function renderLiveDisplay(container) {
 		pointer-events: auto;
 	`;
 
-	const historyList = document.createElement('div');
+	const historyList = document.createElement('ol');
 	const histPos = pos.history;
 	historyList.style.cssText = `
 		position: absolute;
@@ -66,7 +66,7 @@ export async function renderLiveDisplay(container) {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		font-size: 0.9rem;
+		font-size: ${theme?.fontSizes?.historyItem ? theme.fontSizes.historyItem : '1.4rem'};
 		color: ${theme.historyColor};
 		${theme.textShadow ? `text-shadow: ${theme.textShadow};` : ''}
 	`;
@@ -93,9 +93,9 @@ export async function renderLiveDisplay(container) {
 			// Handle History
 			historyList.innerHTML = '';
 			if (session.history && Array.isArray(session.history) && session.history.length > 0) {
-				session.history.slice(-5).forEach((item, idx) => {
-					const row = document.createElement('div');
-					row.innerHTML = `<span style="opacity: 0.5;">${session.history.length - session.history.slice(-5).length + idx + 1}.</span> ${item.title} / ${item.artist}`;
+				session.history.forEach((item, idx) => {
+					const row = document.createElement('li');
+					row.innerHTML = `${item.title} / ${item.artist}`;
 					historyList.appendChild(row);
 				});
 			}
@@ -110,9 +110,9 @@ export async function renderLiveDisplay(container) {
 					nowPlaying.style.opacity = '1';
 					nowPlaying.style.transform = `translateX(0) ${npPos.transform || ''}`;
 					nowPlaying.innerHTML = `
-						<div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: ${theme.accentColor}; margin-bottom: 0.5rem;">Now Playing</div>
-						<div style="font-size: 1.8rem; font-weight: 700;">${song.title}</div>
-						<div style="font-size: 1.1rem; opacity: 0.8;">${song.artist}</div>
+						<div style="font-size: ${theme?.fontSizes?.nowPlayingLabel ? theme.fontSizes.nowPlayingLabel : '1.8rem'}; text-transform: uppercase; letter-spacing: 0.1em; color: ${theme.accentColor}; margin-bottom: 0.5rem;">Now Playing</div>
+						<div style="font-size: ${theme?.fontSizes?.nowPlayingTitle ? theme.fontSizes.nowPlayingTitle : '2.8rem'}; font-weight: 700;">${song.title}</div>
+						<div style="font-size: ${theme?.fontSizes?.nowPlayingArtist ? theme.fontSizes.nowPlayingArtist : '2.1rem'}; opacity: 0.8;">${song.artist}</div>
 					`;
 				} else {
 					console.warn("Song details not found for ID:", session.current_song_id);
